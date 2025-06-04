@@ -2,7 +2,9 @@ package org.schabi.newpipe.extractor.services.soundcloud;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.schabi.newpipe.downloader.DownloaderTestImpl;
 import org.schabi.newpipe.extractor.ExtractorAsserts;
 import org.schabi.newpipe.extractor.MediaFormat;
@@ -30,15 +32,20 @@ import static org.schabi.newpipe.extractor.ServiceList.SoundCloud;
 public class SoundcloudStreamExtractorTest {
     private static final String SOUNDCLOUD = "https://soundcloud.com/";
 
-    public static class SoundcloudGeoRestrictedTrack extends DefaultStreamExtractorTest {
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class SoundcloudGeoRestrictedTrack extends DefaultStreamExtractorTest {
         private static final String ID = "one-touch";
         private static final String UPLOADER = SOUNDCLOUD + "jessglynne";
         private static final int TIMESTAMP = 0;
         private static final String URL = UPLOADER + "/" + ID + "#t=" + TIMESTAMP;
-        private static StreamExtractor extractor;
+        private StreamExtractor extractor;
 
         @BeforeAll
-        public static void setUp() throws Exception {
+        public void setUp() throws Exception {
+            if (extractor != null) {
+                throw new IllegalStateException("extractor already initialized before BeforeAll");
+            }
             NewPipe.init(DownloaderTestImpl.getInstance());
             extractor = SoundCloud.getStreamExtractor(URL);
             try {
@@ -84,15 +91,20 @@ public class SoundcloudStreamExtractorTest {
         }
     }
 
-    public static class SoundcloudGoPlusTrack extends DefaultStreamExtractorTest {
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class SoundcloudGoPlusTrack extends DefaultStreamExtractorTest {
         private static final String ID = "places";
         private static final String UPLOADER = SOUNDCLOUD + "martinsolveig";
         private static final int TIMESTAMP = 0;
         private static final String URL = UPLOADER + "/" + ID + "#t=" + TIMESTAMP;
-        private static StreamExtractor extractor;
+        private StreamExtractor extractor;
 
         @BeforeAll
-        public static void setUp() throws Exception {
+        public void setUp() throws Exception {
+            if (extractor != null) {
+                throw new IllegalStateException("extractor already initialized before BeforeAll");
+            }
             NewPipe.init(DownloaderTestImpl.getInstance());
             extractor = SoundCloud.getStreamExtractor(URL);
             try {
@@ -139,16 +151,23 @@ public class SoundcloudStreamExtractorTest {
         @Override public String expectedLicence() { return "all-rights-reserved"; }
         @Override public String expectedCategory() { return "Dance"; }
     }
-
-    public static class CreativeCommonsPlaysWellWithOthers extends DefaultStreamExtractorTest {
+    // CHECKSTYLE:OFF
+    // TODO: This song doesn't exist anymore; returns 404
+    // CHECKSTYLE:ON
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class CreativeCommonsPlaysWellWithOthers extends DefaultStreamExtractorTest {
         private static final String ID = "plays-well-with-others-ep-2-what-do-an-army-of-ants-and-an-online-encyclopedia-have-in-common";
         private static final String UPLOADER = SOUNDCLOUD + "wearecc";
         private static final int TIMESTAMP = 69;
         private static final String URL = UPLOADER + "/" + ID + "#t=" + TIMESTAMP;
-        private static StreamExtractor extractor;
+        private StreamExtractor extractor;
 
         @BeforeAll
-        public static void setUp() throws Exception {
+        public void setUp() throws Exception {
+            if (extractor != null) {
+                throw new IllegalStateException("extractor already initialized before BeforeAll");
+            }
             NewPipe.init(DownloaderTestImpl.getInstance());
             extractor = SoundCloud.getStreamExtractor(URL);
             extractor.fetchPage();
