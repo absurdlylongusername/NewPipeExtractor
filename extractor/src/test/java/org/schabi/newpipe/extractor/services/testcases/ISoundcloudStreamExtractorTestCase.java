@@ -61,9 +61,6 @@ public interface ISoundcloudStreamExtractorTestCase extends DefaultStreamExtract
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     default Matcher urlMatcher() {
         try {
             return Parser.matchOrThrow(URL_PATTERN, url());
