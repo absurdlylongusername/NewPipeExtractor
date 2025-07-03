@@ -26,11 +26,13 @@ import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.MetaInfo;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.StreamingService;
+import org.schabi.newpipe.extractor.StreamingServiceId;
 import org.schabi.newpipe.extractor.exceptions.ContentNotAvailableException;
 import org.schabi.newpipe.extractor.exceptions.ContentNotSupportedException;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.localization.DateWrapper;
 import org.schabi.newpipe.extractor.utils.ExtractorHelper;
+import org.schabi.newpipe.extractor.utils.ExtractorLogger;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,7 +46,7 @@ import static org.schabi.newpipe.extractor.utils.Utils.isNullOrEmpty;
  * Info object for opened contents, i.e. the content ready to play.
  */
 public class StreamInfo extends Info {
-
+    private static final String TAG = StreamInfo.class.getSimpleName();
     public static class StreamExtractException extends ExtractionException {
         StreamExtractException(final String message) {
             super(message);
@@ -61,19 +63,37 @@ public class StreamInfo extends Info {
         super(serviceId, id, url, originalUrl, name);
         this.streamType = streamType;
         this.ageLimit = ageLimit;
+        ExtractorLogger.d(TAG, "Created " + this);
+
+    }
+
+    @Override
+    public String toString() {
+        return TAG + "[" +
+                "serviceId=" + getServiceId() +
+                ", url='" + getUrl() + '\'' +
+                ", originalUrl='" + getOriginalUrl() + '\'' +
+                ", id='" + getId() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", streamType=" + streamType +
+                ", ageLimit=" + ageLimit +
+                ']';
     }
 
     public static StreamInfo getInfo(final String url) throws IOException, ExtractionException {
+        ExtractorLogger.d(TAG, "getInfo(" + url + ")");
         return getInfo(NewPipe.getServiceByUrl(url), url);
     }
 
     public static StreamInfo getInfo(@Nonnull final StreamingService service,
                                      final String url) throws IOException, ExtractionException {
+        ExtractorLogger.d(TAG, "getInfo(" + service.getClass().getSimpleName() + ", " + url + ")");
         return getInfo(service.getStreamExtractor(url));
     }
 
     public static StreamInfo getInfo(@Nonnull final StreamExtractor extractor)
             throws ExtractionException, IOException {
+        ExtractorLogger.d(TAG, "getInfo(" + extractor.getClass().getSimpleName() + ")");
         extractor.fetchPage();
         final StreamInfo streamInfo;
         try {
@@ -352,7 +372,7 @@ public class StreamInfo extends Info {
     private String uploaderUrl = "";
     @Nonnull
     private List<Image> uploaderAvatars = List.of();
-    private boolean uploaderVerified = false;
+    private boolean uploaderVerified;
     private long uploaderSubscriberCount = -1;
 
     private String subChannelName = "";
@@ -368,7 +388,7 @@ public class StreamInfo extends Info {
     private String hlsUrl = "";
     private List<InfoItem> relatedItems = List.of();
 
-    private long startPosition = 0;
+    private long startPosition;
     private List<SubtitlesStream> subtitles = List.of();
 
     private String host = "";
@@ -376,11 +396,11 @@ public class StreamInfo extends Info {
     private String category = "";
     private String licence = "";
     private String supportInfo = "";
-    private Locale language = null;
+    private Locale language;
     private List<String> tags = List.of();
     private List<StreamSegment> streamSegments = List.of();
     private List<MetaInfo> metaInfo = List.of();
-    private boolean shortFormContent = false;
+    private boolean shortFormContent;
 
     /**
      * Preview frames, e.g. for the storyboard / seekbar thumbnail preview
