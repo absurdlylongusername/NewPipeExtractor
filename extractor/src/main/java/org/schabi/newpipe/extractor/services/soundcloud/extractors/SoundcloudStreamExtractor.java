@@ -46,7 +46,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class SoundcloudStreamExtractor extends StreamExtractor {
-    public static final String TAG = "SoundcloudStreamExtractor";
+    public static final String TAG = SoundcloudStreamExtractor.class.getSimpleName();
     private JsonObject track;
     private boolean isAvailable = true;
 
