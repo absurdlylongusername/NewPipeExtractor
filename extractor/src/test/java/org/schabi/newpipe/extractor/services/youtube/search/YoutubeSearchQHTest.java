@@ -10,6 +10,8 @@ import static java.util.Arrays.asList;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class YoutubeSearchQHTest {
 
     @Test
@@ -20,11 +22,11 @@ public class YoutubeSearchQHTest {
         assertEquals("https://www.youtube.com/results?search_query=G%C3%BCl%C3%BCm&sp=8AEB", YouTube.getSearchQHFactory().fromQuery("Gülüm").getUrl());
         assertEquals("https://www.youtube.com/results?search_query=%3Fj%24%29H%C2%A7B&sp=8AEB", YouTube.getSearchQHFactory().fromQuery("?j$)H§B").getUrl());
 
-        assertEquals("https://music.youtube.com/search?q=asdf", YouTube.getSearchQHFactory().fromQuery("asdf", asList(new String[]{MUSIC_SONGS}), "").getUrl());
-        assertEquals("https://music.youtube.com/search?q=hans", YouTube.getSearchQHFactory().fromQuery("hans", asList(new String[]{MUSIC_SONGS}), "").getUrl());
-        assertEquals("https://music.youtube.com/search?q=Poifj%26jaijf", YouTube.getSearchQHFactory().fromQuery("Poifj&jaijf", asList(new String[]{MUSIC_SONGS}), "").getUrl());
-        assertEquals("https://music.youtube.com/search?q=G%C3%BCl%C3%BCm", YouTube.getSearchQHFactory().fromQuery("Gülüm", asList(new String[]{MUSIC_SONGS}), "").getUrl());
-        assertEquals("https://music.youtube.com/search?q=%3Fj%24%29H%C2%A7B", YouTube.getSearchQHFactory().fromQuery("?j$)H§B", asList(new String[]{MUSIC_SONGS}), "").getUrl());
+        assertEquals("https://music.youtube.com/search?q=asdf", YouTube.getSearchQHFactory().fromQuery("asdf", List.of(MUSIC_SONGS), "").getUrl());
+        assertEquals("https://music.youtube.com/search?q=hans", YouTube.getSearchQHFactory().fromQuery("hans", List.of(MUSIC_SONGS), "").getUrl());
+        assertEquals("https://music.youtube.com/search?q=Poifj%26jaijf", YouTube.getSearchQHFactory().fromQuery("Poifj&jaijf", List.of(MUSIC_SONGS), "").getUrl());
+        assertEquals("https://music.youtube.com/search?q=G%C3%BCl%C3%BCm", YouTube.getSearchQHFactory().fromQuery("Gülüm", List.of(MUSIC_SONGS), "").getUrl());
+        assertEquals("https://music.youtube.com/search?q=%3Fj%24%29H%C2%A7B", YouTube.getSearchQHFactory().fromQuery("?j$)H§B", List.of(MUSIC_SONGS), "").getUrl());
     }
 
     @Test
